@@ -117,7 +117,6 @@ namespace APRSUniversalC
 
         private void handleServerMessage(string bytes)
         {
-            string[] temp;
             StringReader sr = new StringReader(bytes);
             while(true)
             {
@@ -156,32 +155,7 @@ namespace APRSUniversalC
             //throw new NotImplementedException();
         }
 
-        private async void test()
-        {
-            socket.Control.KeepAlive = false;
-            HostName hostName = new HostName("rotate.aprs.net");
-            string serviceName = "14580";
-
-            await socket.ConnectAsync(hostName, serviceName, SocketProtectionLevel.PlainSocket);
-
-          
-            DataWriter writer;
-            DataReader reader;
-            writer = new DataWriter(socket.OutputStream);
-            reader = new DataReader(socket.InputStream);
-            string loginString = "user KD7ZYW pass 0 " + Environment.NewLine;
-            writer.WriteString(loginString);
-            try
-            {
-                await writer.StoreAsync();
-                textBlock.Text = "Connecting...";
-                waitForData(socket);
-            } catch (Exception ex)
-            {
-                textBlock.Text = ex.Message;
-
-            }
-        }
+       
 
         private async void waitForData(StreamSocket socket)
         {
