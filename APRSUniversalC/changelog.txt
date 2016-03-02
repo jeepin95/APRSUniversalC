@@ -1,0 +1,30 @@
+
+2009-01-05  Terry E. Trapp, KE4PJW <fatboyntn@yahoo.com> (Version 0.4)
+
+* APRS.cs (parse) : Added the ability to parse positionless Weather Reports
+
+2009-01-04  Terry E. Trapp, KE4PJW <fatboyntn@yahoo.com> (Version 0.3)
+
+* APRS.cs : Added the following properties for Weather Packets:
+		WindDirection
+		WindSpeed
+		WindGust
+		WeatherTemp
+		RainHour
+		RainDay
+		RainMidnight
+		Humidity
+		Pressure
+		Luminosity
+		Snowfall
+		Raincounter
+* APRS.cs (parse) : Known bug: Only "Complete" Weather Packets are parsed. Standalone and positionless Weather Packets are not parsed.
+
+
+2008-12-31  Terry E. Trapp, KE4PJW <fatboyntn@yahoo.com> (Version 0.2)
+
+* APRS.cs : Added property "Status" and the ability to parse status messages.
+* APRS.cs (parse) : Fixed bug in location parser that would cause the parse method to not identify Location packets without timestamps in the southern hemisphere.
+* APRS.cs (parse) : Fixed bug in location parser that would cause the parse method to not identify location packets with timestamps that were in Day/Hours/Minutes (DHM) format.
+* APRS.cs (parse) : Identified bug in location parser that  causes the parse method to not identify timestamps in Month/Day/Hours/Minutes (MDHM) format.
+
