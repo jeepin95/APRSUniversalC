@@ -1,5 +1,6 @@
 ﻿using hamradio.ke4pjw;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,6 +47,8 @@ namespace APRSUniversalC
         {
 
             login();
+            MapItems.ItemsSource = prManager.getPositionReports(myMap.Center.Position);
+
         }
 
         private async void login() {
@@ -56,6 +59,8 @@ namespace APRSUniversalC
 
             await writer.StoreAsync();
         }
+
+        
 
         private async void test2()
         {
@@ -103,8 +108,14 @@ namespace APRSUniversalC
 
 
                     string text = Encoding.UTF8.GetString(bytes, 0, bytes.Length);
-
-                    this.handleServerMessage(text);  //insert your handler here
+                    try
+                    {
+                        this.handleServerMessage(text);  //insert your handler here
+                    }
+                    catch (Exception ex)
+                    {
+                        textBlock.Text = ex.Message;
+                    }
 
                     //detach stream so that it won't be closed when the datareader is disposed later
                     inputStream.DetachStream();
@@ -114,6 +125,9 @@ namespace APRSUniversalC
         }
         RandomAccessStreamReference mapIconStreamReference;
         int locCount = 0;
+
+        PositionReportManager prManager = new PositionReportManager();
+
 
         private void handleServerMessage(string bytes)
         {
@@ -127,22 +141,34 @@ namespace APRSUniversalC
                     p.Parse(t);
                     if(p.PacketType == "Location")
                     {
+                        
                         locCount++;
                         txtCount.Text = String.Format("{0}", locCount);
+
+                        prManager.addAPRS(p);
+                        
+
+
                         //textBlock.Text += p.RawData;
                         //textBlock.Text += String.Format("{0} ({1},{2}){3}",p.Callsign,p.Latitude,p.Longitude,Environment.NewLine);
-                        mapIconStreamReference = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/mappin.png"));
-                        MapIcon mapIcon1 = new MapIcon();
-                        BasicGeoposition bgp = new BasicGeoposition() { Latitude = Convert.ToDouble(p.Latitude), Longitude = Convert.ToDouble(p.Longitude)};
-                        Geopoint gp = new Geopoint(bgp);
+                        //mapIconStreamReference = RandomAccessStreamReference.CreateFromUri(new Uri("ms-appx:///Assets/plus.png"));
+                        //MapIcon mapIcon1 = new MapIcon();
+                        //BasicGeoposition bgp = new BasicGeoposition() { Latitude = Convert.ToDouble(p.Latitude), Longitude = Convert.ToDouble(p.Longitude)};
+                        //Geopoint gp = new Geopoint(bgp);
 
+                        
 
-                        mapIcon1.Location = gp;
-                        mapIcon1.NormalizedAnchorPoint = new Point(0.5, 0.5);
-                        mapIcon1.Title = p.Callsign;
-                        mapIcon1.Image = mapIconStreamReference;
-                        mapIcon1.ZIndex = 0;
-                        myMap.MapElements.Add(mapIcon1);
+                        //mapIcon1.Location = gp;
+                        //mapIcon1.NormalizedAnchorPoint = new Point(0.5, 0.5);
+                        //mapIcon1.Title = p.Callsign;
+                        //mapIcon1.Image = mapIconStreamReference;
+                        //mapIcon1.ZIndex = 0;
+
+                        //Pushpin pin = new Pushpin();
+
+                        ////myMap.MapElements.Add(mapIcon1);
+                        //myMap.Children.Add(mapIcon1);
+
 
                     }
 
@@ -178,6 +204,9 @@ namespace APRSUniversalC
 
         }
 
+        private void mapItemButton_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }

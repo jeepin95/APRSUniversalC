@@ -13,6 +13,28 @@
 
 
         <Maps:MapControl x:Name="myMap" Margin="0,37,0,0">
+            <Maps:MapItemsControl x:Name="MapItems">
+                <Maps:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button  x:Name="mapItemButton" Click="mapItemButton_Click" Background="Transparent">
+                            <StackPanel>
+                                <Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                    <TextBlock Text="{Binding APRSPacket.Callsign}"/>
+                                </Border>
+                                <Image Source="{Binding ImageSourceUri}"
+                                               Maps:MapControl.Location="{Binding Location}" 
+                                               >
+                                    <Image.Transitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition/>
+                                        </TransitionCollection>
+                                    </Image.Transitions>
+                                </Image>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </Maps:MapItemsControl.ItemTemplate>
+            </Maps:MapItemsControl>
         </Maps:MapControl>
 
 
